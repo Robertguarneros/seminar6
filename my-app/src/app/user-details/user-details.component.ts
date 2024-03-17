@@ -16,7 +16,6 @@ import { UserService } from '../services/user.service';
 export class UserDetailsComponent {
   @Input() user?: User;
   @Output() deselect = new EventEmitter<void>();
-  @Output() showPostDetails = new EventEmitter<Post>();
   @Output() userUpdated = new EventEmitter<User>();
 
   editUserForm: FormGroup;
@@ -32,7 +31,8 @@ export class UserDetailsComponent {
  'phone_number':'',
  'gender':''
 };
-
+  // Boolean property to track the visibility of posts
+showPosts: boolean = false;
 
 constructor(public userService: UserService, private formBuilder: FormBuilder) {
   this.editUserForm = this.formBuilder.group({
@@ -48,7 +48,14 @@ constructor(public userService: UserService, private formBuilder: FormBuilder) {
 
   // Comprobar si hay un usuario recibido como entrada y actualizar el formulario si es necesario
 }
-
+// Method to toggle the visibility of posts
+  toggleShowPosts() {
+    this.showPosts = !this.showPosts; // Toggle the value of showPosts
+    if(this.showPosts){
+      
+    }
+  }
+  
 public updateFormWithUserData(user: User): void {
   // Actualizar los valores del formulario con los datos del usuario
   this.editUserForm.patchValue({
@@ -72,12 +79,6 @@ public updateFormWithUserData(user: User): void {
     }   
   }
  
-  
-
-  showPost(post: Post): void {
-    this.showPostDetails.emit(post);
-  }
-
   updateEdit(state: boolean) {
     this.update = state;
     console.log("Cambio modo edición/lectura", this.update);

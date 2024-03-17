@@ -55,5 +55,11 @@
   <div><span>Phone Number:</span> {{user.phone_number}}</div>
   <div><span>Gender:</span> {{user.gender}}</div>
   
+
+  <button type="button" (click)="toggleShowPosts()">Toggle Posts</button>
+
+  <div *ngIf="showPosts">
+    <app-post-details [userId]="user._id"></app-post-details>
+  </div>
   <button (click)="deselect.emit()">Back to Users</button>
 </div>

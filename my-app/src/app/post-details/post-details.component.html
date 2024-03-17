@@ -1,8 +1,59 @@
-<div *ngIf="post">
-    <h2>{{post.title}}</h2>
-    <div><span>ID:</span> {{post.id}}</div>
-    <div><span>User ID:</span> {{post.userId}}</div>
-    <div><span>Body:</span> {{post.body}}</div>
+<section>
+  <h1>User Posts</h1>
+<ul>
+  <button type="button" *ngIf="!update" (click)="toggleUpdateMode()">Update Posts</button>
+  <button type="button" *ngIf="update" (click)="toggleUpdateMode()">Cancel</button>
+    @for(post of posts; track post._id){
+      <h2>{{ post.title }}</h2>
+      <p>Post ID:{{post._id}}</p>
+      <p> {{ post.content }}</p>
+      <p>This post was created by {{ post.author }}</p>
+      <div *ngIf="update">
+        <form [formGroup]="editPostForm" (ngSubmit)="updatePost(post)">
+          <label for="author">Author Id:</label>
+          <input type="text" id="author" formControlName="author"><br>
+          <div *ngIf="editPostForm.get('author')?.invalid && (editPostForm.get('author')?.dirty || editPostForm.get('author')?.touched)">
+          </div>
+          <label for="content">Content:</label>
+          <input type="text" id="content" formControlName="content"><br>
+          <div *ngIf="editPostForm.get('content')?.invalid && (editPostForm.get('content')?.dirty || editPostForm.get('content')?.touched)">
+          </div>
+          <label for="title">Title:</label>
+          <input type="text" id="title" formControlName="title"><br>
+          <div *ngIf="editPostForm.get('title')?.invalid && (editPostForm.get('title')?.dirty || editPostForm.get('title')?.touched)">
+          </div>
+          <button type="submit" [disabled]="editPostForm.invalid">Update Post</button> 
+        </form>
+      </div>
+    }
+  </ul>
+</section>
+<section>
+  <button type="button" *ngIf="!showAddPostForm" (click)="showAddUser(true)">Create Post</button>
+  <button type="button" *ngIf="showAddPostForm" (click)="showAddUser(false)">-</button>
+
+<div *ngIf="showAddPostForm">
+  <form [formGroup]="newPostForm" (ngSubmit)="createPost()">
+
+    <label for="author">Author Id:</label>
+    <input type="text" id="author" formControlName="author"><br>
+    <div *ngIf="newPostForm.get('author')?.invalid && (newPostForm.get('author')?.dirty || newPostForm.get('author')?.touched)">
+      <div *ngIf="newPostForm.get('author')?.errors?.['required']" class="required-error">Author es requerido.</div>
+    </div>
     
-    <button (click)="goBack.emit()">Back to Posts</button>
-  </div>
+    <label for="content">Content:</label>
+    <input type="text" id="content" formControlName="content"><br>
+    <div *ngIf="newPostForm.get('content')?.invalid && (newPostForm.get('content')?.dirty || newPostForm.get('content')?.touched)">
+      <div *ngIf="newPostForm.get('content')?.errors?.['required']" class="required-error">Content es obligatorio.</div>
+    </div>
+    
+    <label for="title">Title:</label>
+    <input type="text" id="title" formControlName="title"><br>
+    <div *ngIf="newPostForm.get('title')?.invalid && (newPostForm.get('title')?.dirty || newPostForm.get('title')?.touched)">
+      <div *ngIf="newPostForm.get('title')?.errors?.['required']" class="required-error">Title es obligatorio.</div>
+    </div>
+    
+    <button type="submit" [disabled]="newPostForm.invalid">Create Post</button> 
+  </form>
+</div>
+</section>
