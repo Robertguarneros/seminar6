@@ -1,0 +1,8 @@
+<div *ngIf="post">
+    <h2>{{post.title}}</h2>
+    <div><span>ID:</span> {{post.id}}</div>
+    <div><span>User ID:</span> {{post.userId}}</div>
+    <div><span>Body:</span> {{post.body}}</div>
+    
+    <button (click)="goBack.emit()">Back to Posts</button>
+  </div>
